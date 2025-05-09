@@ -1,0 +1,53 @@
+name: spv4
+prefix: __lab-name
+mgmt:
+  network: spv4_mgmt
+  ipv4-subnet: 172.16.0.0/24
+  ipv4-gw: 172.16.0.254
+  ipv6-subnet: 3fff:172:16:0::/80
+  ipv6-gw: 3fff:172:16:0::254
+topology:
+  defaults:
+    kind: cisco_iol
+    image: vrnetlab/cisco_iol:17.15.01
+    startup-config: lab_configs/iol_http_source.partial
+  nodes:
+    r1:
+      mgmt-ipv4: 172.16.0.1
+      mgmt-ipv6: 3fff:172:16:0::1
+    r2:
+      mgmt-ipv4: 172.16.0.2
+      mgmt-ipv6: 3fff:172:16:0::2
+    r3:
+      mgmt-ipv4: 172.16.0.3
+      mgmt-ipv6: 3fff:172:16:0::3
+    r4:
+      mgmt-ipv4: 172.16.0.4
+      mgmt-ipv6: 3fff:172:16:0::4
+    r5:
+      mgmt-ipv4: 172.16.0.5
+      mgmt-ipv6: 3fff:172:16:0::5
+    r6:
+      mgmt-ipv4: 172.16.0.6
+      mgmt-ipv6: 3fff:172:16:0::6
+    r7:
+      mgmt-ipv4: 172.16.0.7
+      mgmt-ipv6: 3fff:172:16:0::7
+    r8:
+      mgmt-ipv4: 172.16.0.8
+      mgmt-ipv6: 3fff:172:16:0::8
+    sw:
+      image: vrnetlab/cisco_iol:L2-17.15.01
+      type: L2
+      mgmt-ipv4: 172.16.0.9
+      mgmt-ipv6: 3fff:172:16:0::9
+      startup-config: lab_configs/SW.cfg
+  links:
+    - endpoints: ["r1:Ethernet0/1","sw:Ethernet0/1"]
+    - endpoints: ["r2:Ethernet0/1","sw:Ethernet0/2"]
+    - endpoints: ["r3:Ethernet0/1","sw:Ethernet0/3"]
+    - endpoints: ["r4:Ethernet0/1","sw:Ethernet1/0"]
+    - endpoints: ["r5:Ethernet0/1","sw:Ethernet1/1"]
+    - endpoints: ["r6:Ethernet0/1","sw:Ethernet1/2"]
+    - endpoints: ["r7:Ethernet0/1","sw:Ethernet1/3"]
+    - endpoints: ["r8:Ethernet0/1","sw:Ethernet2/0"]
