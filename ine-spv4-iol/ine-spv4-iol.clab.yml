@@ -10,7 +10,6 @@ topology:
   defaults:
     kind: cisco_iol
     image: vrnetlab/cisco_iol:17.15.01
-    startup-config: lab_configs/iol_http_source.partial
   nodes:
     r1:
       mgmt-ipv4: 172.16.0.1
@@ -41,7 +40,6 @@ topology:
       type: L2
       mgmt-ipv4: 172.16.0.9
       mgmt-ipv6: 3fff:172:16:0::9
-      startup-config: lab_configs/SW.cfg
   links:
     - endpoints: ["r1:Ethernet0/1","sw:Ethernet0/1"]
     - endpoints: ["r2:Ethernet0/1","sw:Ethernet0/2"]
