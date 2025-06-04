@@ -1,0 +1,26 @@
+{% if inventory_hostname in dm.evpn.leaves %}
+router bgp {{ dm.evpn.asn }}
+ no bgp default ipv4-unicast
+{% for spine in dm.evpn.spines %}
+ neighbor {{ dm.underlay.interfaces[spine].Loopback0.split('/')[0] }} remote-as {{ dm.evpn.asn }}
+ neighbor {{ dm.underlay.interfaces[spine].Loopback0.split('/')[0] }} update-source Loopback0
+{% endfor %}
+ address-family l2vpn evpn
+{% for spine in dm.evpn.spines %}
+  neighbor {{ dm.underlay.interfaces[spine].Loopback0.split('/')[0] }} activate
+  neighbor {{ dm.underlay.interfaces[spine].Loopback0.split('/')[0] }} send-community both
+{% endfor %}
+{% else %}
+router bgp {{ dm.evpn.asn }}
+ no bgp default ipv4-unicast
+{% for leaf in dm.evpn.leaves %}
+ neighbor {{ dm.underlay.interfaces[leaf].Loopback0.split('/')[0] }} remote-as {{ dm.evpn.asn }}
+ neighbor {{ dm.underlay.interfaces[leaf].Loopback0.split('/')[0] }} update-source Loopback0
+{% endfor %}
+ address-family l2vpn evpn
+{% for leaf in dm.evpn.leaves %}
+  neighbor {{ dm.underlay.interfaces[leaf].Loopback0.split('/')[0] }} activate
+  neighbor {{ dm.underlay.interfaces[leaf].Loopback0.split('/')[0] }} send-community both
+  neighbor {{ dm.underlay.interfaces[leaf].Loopback0.split('/')[0] }} route-reflector-client
+{% endfor %}
+{% endif %}

@@ -1,0 +1,103 @@
+---
+- name: PLAY - Build the Lab
+  hosts: all
+  gather_facts: no
+  vars_files:
+    - ./datamodel.yml
+
+  tasks:
+
+    - name: Disable CDP on clab mgmt interface
+      cisco.ios.ios_config:
+        lines:
+          - no cdp enable
+        parents: interface Ethernet0/0
+      changed_when: false
+          
+    - name: Enable all Interfaces
+      cisco.ios.ios_interfaces:
+        config:
+          - name: "{{ item.key }}"
+            enabled: true
+        state: merged
+      loop: "{{ dm.underlay.interfaces[inventory_hostname] | dict2items }}"
+
+    - name: Configure IP Addressing
+      cisco.ios.ios_l3_interfaces:
+        config:
+          - name: "{{ item.key }}"
+            ipv4:
+              - address: "{{item.value}}"
+        state: merged
+      loop: "{{ dm.underlay.interfaces[inventory_hostname] | dict2items }}"
+
+    - name: Create OSPF Process
+      cisco.ios.ios_ospfv2:
+        config:
+          processes:
+            - process_id: 1
+              router_id: "{{ dm.underlay.interfaces[inventory_hostname].Loopback0.split('/')[0] }}"
+
+    - name: Configure OSPF - Loopback Interfaces
+      cisco.ios.ios_ospf_interfaces:
+        config:
+          - name: "{{ item.key }}"
+            address_family:
+              - afi: ipv4
+                process:
+                  id: 1
+                  area_id: 0
+        state: merged
+      when: "'Loopback' in item.key"
+      loop: "{{ dm.underlay.interfaces[inventory_hostname] | dict2items }}"
+
+    - name: Configure OSPF - Ethernet Interfaces
+      cisco.ios.ios_ospf_interfaces:
+        config:
+          - name: "{{ item.key }}"
+            address_family:
+              - afi: ipv4
+                process:
+                  id: 1
+                  area_id: 0
+                network:
+                  point_to_point: true
+        state: merged
+      when: "'Ethernet' in item.key"
+      loop: "{{ dm.underlay.interfaces[inventory_hostname] | dict2items }}"
+
+    - name: Enable Multicast Routing and Configure RP
+      vars:
+        rp_address: "{{ dm.underlay.interfaces['s1'].Loopback255.split('/')[0] }}"
+      cisco.ios.ios_config:
+        lines:
+          - ip multicast-routing
+          - "ip pim rp-address {{ rp_address }}"
+
+    - name: Enable PIM
+      vars:
+        rp_address: "{{ dm.underlay.interfaces['s1'].Loopback255.split('/')[0] }}"
+      cisco.ios.ios_config:
+        lines:
+          - ip pim sparse-mode
+        parents: "interface {{ item.key }}"
+      loop: "{{ dm.underlay.interfaces[inventory_hostname] | dict2items }}"
+
+    - name: Configure MSDP for Anycast RP
+      vars:
+        msdp_peer: "{{ 
+            dm.underlay.interfaces['s1'].Loopback0.split('/')[0] 
+            if inventory_hostname == 's2'
+            else dm.underlay.interfaces['s2'].Loopback0.split('/')[0] }}"
+      cisco.ios.ios_config:
+        lines:
+          - "ip msdp peer {{ msdp_peer }} connect-source Loopback0 remote-as {{ dm.evpn.asn }}"
+      when: inventory_hostname in dm.evpn.spines
+
+    - name: Deploy EVPN BGP Configurations
+      cisco.ios.ios_config:
+        src: ./bgp-template.j2
+        
+    - name: Save device configurations
+      cisco.ios.ios_config:
+        save_when: modified

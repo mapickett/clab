@@ -1,0 +1,26 @@
+---
+- name: Setup Interfaces
+  hosts: all
+  gather_facts: no
+
+  tasks:
+
+    - name: Enable all Interfaces
+      cisco.ios.ios_config:
+        save_when: modified
+        lines:
+          - no shutdown
+        parents: "interface {{ item }}"
+      loop:
+        - Eth0/1
+        - Eth0/2
+        - Eth0/3
+        - Eth1/0 
+      ignore_errors: true
+
+    - name: Disable CDP on mgmt interface
+      cisco.ios.ios_config:
+        lines:
+          - no cdp enable
+        parents: "interface Ethernet0/0"
+        save_when: modified

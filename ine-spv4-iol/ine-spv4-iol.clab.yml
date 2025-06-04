@@ -35,17 +35,17 @@ topology:
     r8:
       mgmt-ipv4: 172.16.0.8
       mgmt-ipv6: 3fff:172:16:0::8
-    sw:
-      image: vrnetlab/cisco_iol:L2-17.15.01
-      type: L2
-      mgmt-ipv4: 172.16.0.9
-      mgmt-ipv6: 3fff:172:16:0::9
   links:
-    - endpoints: ["r1:Ethernet0/1","sw:Ethernet0/1"]
-    - endpoints: ["r2:Ethernet0/1","sw:Ethernet0/2"]
-    - endpoints: ["r3:Ethernet0/1","sw:Ethernet0/3"]
-    - endpoints: ["r4:Ethernet0/1","sw:Ethernet1/0"]
-    - endpoints: ["r5:Ethernet0/1","sw:Ethernet1/1"]
-    - endpoints: ["r6:Ethernet0/1","sw:Ethernet1/2"]
-    - endpoints: ["r7:Ethernet0/1","sw:Ethernet1/3"]
-    - endpoints: ["r8:Ethernet0/1","sw:Ethernet2/0"]
+    - endpoints: ["r1:Ethernet0/1","r2:Ethernet0/1"]
+    - endpoints: ["r2:Ethernet0/2","r3:Ethernet0/1"]
+    - endpoints: ["r2:Ethernet0/3","r4:Ethernet0/1"]
+    - endpoints: ["r3:Ethernet0/2","r4:Ethernet0/2"]
+    - endpoints: ["r3:Ethernet0/3","r5:Ethernet0/1"]
+    - endpoints: ["r3:Ethernet1/0","r6:Ethernet0/1"]
+    - endpoints: ["r4:Ethernet0/3","r5:Ethernet0/2"]
+    - endpoints: ["r4:Ethernet1/0","r6:Ethernet0/2"]
+    - endpoints: ["r5:Ethernet0/3","r6:Ethernet0/3"]
+    - endpoints: ["r5:Ethernet1/0","r7:Ethernet0/1"]
+    - endpoints: ["r6:Ethernet1/0","r7:Ethernet0/2"]
+    - endpoints: ["r7:Ethernet0/3","r8:Ethernet0/1"]
+

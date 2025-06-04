@@ -1,0 +1,24 @@
+name: evpn-vxlan
+prefix: __lab-name
+topology:
+  defaults:
+    kind: cisco_iol
+    image: vrnetlab/cisco_iol:17.15.01
+  nodes:
+    s1:
+    s2:
+    l1:
+    l2:
+    l3:
+    l4:
+  links:
+    - endpoints: ["s1:Ethernet0/1","l1:Ethernet0/1"]
+    - endpoints: ["s1:Ethernet0/2","l2:Ethernet0/1"]
+    - endpoints: ["s1:Ethernet0/3","l3:Ethernet0/1"]
+    - endpoints: ["s1:Ethernet1/0","l4:Ethernet0/1"]
+    - endpoints: ["s2:Ethernet0/1","l1:Ethernet0/2"]
+    - endpoints: ["s2:Ethernet0/2","l2:Ethernet0/2"]
+    - endpoints: ["s2:Ethernet0/3","l3:Ethernet0/2"]
+    - endpoints: ["s2:Ethernet1/0","l4:Ethernet0/2"]
+
+
