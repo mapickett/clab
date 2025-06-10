@@ -1,6 +1,6 @@
 ---
 - name: PLAY - Build the Lab
-  hosts: all
+  hosts: cisco_iol
   gather_facts: no
   vars_files:
     - ./datamodel.yml
