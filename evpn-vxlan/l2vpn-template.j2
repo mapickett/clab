@@ -1,0 +1,62 @@
+# https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9500/software/release/17-15/configuration_guide/vxlan/b_1715_bgp_evpn_vxlan_9500_cg/bgp_evpn_vxlan_overview.html
+# https://www.cisco.com/c/en/us/support/docs/ip/multicast/200791-Configuration-and-Troubleshooting-of-VxL.html
+
+Configuring Layer 2 VPN EVPN on a VTEP
+
+Configuring an EVPN Instance on the VLAN on a VTEP
+
+Configuring the Access-Facing Interface in the VLAN on a VTEP
+
+Configuring the Loopback Interface on a VTEP
+
+Configuring the NVE Interface on a VTEP
+
+Configuring BGP on a VTEP with EVPN Address Family
+
+Leaf-01# show running-config
+hostname Leaf-01
+!
+ip routing
+!
+ip multicast-routing
+!
+l2vpn evpn
+replication-type static
+router-id Loopback1
+!
+l2vpn evpn instance 101 vlan-based
+encapsulation vxlan
+!
+system mtu 9198
+!
+vlan configuration 101
+member evpn-instance 101 vni 10101
+!
+interface Loopback0
+ip address 172.16.255.1 255.255.255.255
+ip pim sparse-mode
+ip ospf 1 area 0
+!
+interface Loopback1
+ip address 172.16.254.1 255.255.255.255
+ip pim sparse-mode
+ip ospf 1 area 0
+!
+interface GigabitEthernet1/0/10
+switchport access vlan 101
+switchport mode access
+spanning-tree portfast
+!
+interface TenGigabitEthernet1/1/1
+no switchport
+ip address 172.16.12.1 255.255.255.0
+ip pim sparse-mode
+ip ospf network point-to-point
+ip ospf 1 area 0
+!
+interface nve1
+no ip address
+source-interface Loopback1
+host-reachability protocol bgp
+member vni 10101 mcast-group 225.0.0.101
+!
