@@ -1,0 +1,33 @@
+# topology documentation: http://containerlab.dev/lab-examples/single-srl/
+name: linux
+
+topology:
+  nodes:
+    n1:
+      kind: linux
+      image: ghcr.io/mapickett/alpine-ssh:latest
+      exec:
+        - ifconfig eth1 10.0.0.1 netmask 255.255.255.0
+      healthcheck:
+        test:
+          - CMD-SHELL
+          - cat /etc/os-release
+        start-period: 3
+        retries: 1
+        interval: 5
+        timeout: 2
+    n2:
+      kind: linux
+      image: ghcr.io/mapickett/ubuntu-ssh:latest
+      exec:
+        - ip address add 10.0.0.2/24 dev eth1
+      healthcheck:
+        test:
+          - CMD-SHELL
+          - cat /etc/os-release
+        start-period: 3
+        retries: 1
+        interval: 5
+        timeout: 2
+  links:
+    - endpoints: ["n1:eth1","n2:eth1"]

@@ -33,12 +33,12 @@ topology:
       mgmt-ipv4: 172.16.0.11
       mgmt-ipv6: 3fff:172:16:0::11
       kind: linux
-      image: myalpine:latest
+      image: ghcr.io/mapickett/alpine-ssh:latest
     n2:
       mgmt-ipv4: 172.16.0.12
       mgmt-ipv6: 3fff:172:16:0::12
       kind: linux
-      image: myalpine:latest
+      image: ghcr.io/mapickett/alpine-ssh:latest
 
   links:
     - endpoints: ["s1:Ethernet0/1","l1:Ethernet0/1"]
