@@ -1,0 +1,11 @@
+name: c8000v
+topology:
+  nodes:
+    router1:
+      kind: cisco_c8000v
+      image: vrnetlab/cisco_c8000v:17.15.01a
+    router2:
+      kind: cisco_c8000v
+      image: vrnetlab/cisco_c8000v:17.15.01a
+  links:
+    - endpoints: ["router1:GigabitEthernet2","router2:GigabitEthernet2"]

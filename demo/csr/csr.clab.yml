@@ -1,0 +1,11 @@
+name: csr
+topology:
+  nodes:
+    router1:
+      kind: cisco_csr1000v
+      image: vrnetlab/cisco_csr1000v:17.03.08
+    router2:
+      kind: cisco_csr1000v
+      image: vrnetlab/cisco_csr1000v:17.03.08
+  links:
+    - endpoints: ["router1:GigabitEthernet2","router2:GigabitEthernet2"]

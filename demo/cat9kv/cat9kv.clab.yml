@@ -1,0 +1,6 @@
+name: cat9kv
+topology:
+  nodes:
+    switch1:
+      kind: cisco_cat9kv
+      image: vrnetlab/cisco_cat9kv:17.15.01
