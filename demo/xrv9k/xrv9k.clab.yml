@@ -1,0 +1,6 @@
+name: xrv9k
+topology:
+  nodes:
+    router1:
+      kind: cisco_xrv9k
+      image: vrnetlab/cisco_xrv9k:24.3.1

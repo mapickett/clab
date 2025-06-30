@@ -1,0 +1,6 @@
+name: n9kv
+topology:
+  nodes:
+    switch1:
+      kind: cisco_n9kv
+      image: vrnetlab/cisco_n9kv:10.5.1.F
