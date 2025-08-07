@@ -1,0 +1,55 @@
+name: clos
+prefix: __lab-name
+mgmt:
+  network: clos_mgmt
+  ipv4-subnet: 172.16.1.0/24
+  ipv4-gw: 172.16.1.254
+  ipv6-subnet: 3fff:172:16:1::/80
+  ipv6-gw: 3fff:172:16:1::254
+topology:
+  defaults:
+    kind: cisco_iol
+    image: vrnetlab/cisco_iol:17.15.01
+  nodes:
+    spine1:
+      group: spine
+      mgmt-ipv4: 172.16.1.1
+      mgmt-ipv6: 3fff:172:16:1::1
+    spine2:
+      group: spine
+      mgmt-ipv4: 172.16.1.2
+      mgmt-ipv6: 3fff:172:16:1::2
+    leaf1:
+      group: leaf
+      mgmt-ipv4: 172.16.1.3
+      mgmt-ipv6: 3fff:172:16:1::3
+    leaf2:
+      group: leaf
+      mgmt-ipv4: 172.16.1.4
+      mgmt-ipv6: 3fff:172:16:1::4
+    leaf3:
+      group: leaf
+      mgmt-ipv4: 172.16.1.5
+      mgmt-ipv6: 3fff:172:16:1::5
+    client1:
+      kind: linux
+      image: ghcr.io/mapickett/alpine-ssh:latest
+      group: server
+    client2:
+      kind: linux
+      image: ghcr.io/mapickett/alpine-ssh:latest
+      group: server
+    client3:
+      kind: linux
+      image: ghcr.io/mapickett/alpine-ssh:latest
+      group: server
+  links:
+    - endpoints: ["spine1:Ethernet0/1","leaf1:Ethernet0/1"]
+    - endpoints: ["spine2:Ethernet0/1","leaf1:Ethernet0/2"]
+    - endpoints: ["spine1:Ethernet0/2","leaf2:Ethernet0/1"]
+    - endpoints: ["spine2:Ethernet0/2","leaf2:Ethernet0/2"]
+    - endpoints: ["spine1:Ethernet0/3","leaf3:Ethernet0/1"]
+    - endpoints: ["spine2:Ethernet0/3","leaf3:Ethernet0/2"]
+    - endpoints: ["client1:eth1","leaf1:Ethernet0/3"]
+    - endpoints: ["client2:eth1","leaf2:Ethernet0/3"]
+    - endpoints: ["client3:eth1","leaf3:Ethernet0/3"]
