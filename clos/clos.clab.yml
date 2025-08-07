@@ -35,14 +35,20 @@ topology:
       kind: linux
       image: ghcr.io/mapickett/alpine-ssh:latest
       group: server
+      mgmt-ipv4: 172.16.1.11
+      mgmt-ipv6: 3fff:172:16:1::11
     client2:
       kind: linux
       image: ghcr.io/mapickett/alpine-ssh:latest
       group: server
+      mgmt-ipv4: 172.16.1.12
+      mgmt-ipv6: 3fff:172:16:1::12
     client3:
       kind: linux
       image: ghcr.io/mapickett/alpine-ssh:latest
       group: server
+      mgmt-ipv4: 172.16.1.13
+      mgmt-ipv6: 3fff:172:16:1::13
   links:
     - endpoints: ["spine1:Ethernet0/1","leaf1:Ethernet0/1"]
     - endpoints: ["spine2:Ethernet0/1","leaf1:Ethernet0/2"]
