@@ -1,4 +1,4 @@
-name: evpn-vxlan
+name: evpn
 prefix: __lab-name
 mgmt:
   network: spv4_mgmt
@@ -8,48 +8,64 @@ mgmt:
   ipv6-gw: 3fff:172:16:0::254
 topology:
   defaults:
-    kind: cisco_iol
-    image: vrnetlab/cisco_iol:17.15.01
+    kind: cisco_cat9kv
+    image: vrnetlab/cisco_cat9kv:17.15.01
   nodes:
     s1:
       mgmt-ipv4: 172.16.0.1
       mgmt-ipv6: 3fff:172:16:0::1
+      env:
+        VCPU: 8
+        RAM: 20480
     s2:
       mgmt-ipv4: 172.16.0.2
       mgmt-ipv6: 3fff:172:16:0::2
+      env:
+        VCPU: 8
+        RAM: 20480
     l1:
       mgmt-ipv4: 172.16.0.3
       mgmt-ipv6: 3fff:172:16:0::3
+      env:
+        VCPU: 8
+        RAM: 20480
     l2:
       mgmt-ipv4: 172.16.0.4
       mgmt-ipv6: 3fff:172:16:0::4
+      env:
+        VCPU: 8
+        RAM: 20480
     l3:
       mgmt-ipv4: 172.16.0.5
       mgmt-ipv6: 3fff:172:16:0::5
-    l4:
-      mgmt-ipv4: 172.16.0.6
-      mgmt-ipv6: 3fff:172:16:0::6
+      env:
+        VCPU: 8
+        RAM: 20480
     n1:
       mgmt-ipv4: 172.16.0.11
       mgmt-ipv6: 3fff:172:16:0::11
       kind: linux
-      image: ghcr.io/mapickett/alpine-ssh:latest
+      image: wbitt/network-multitool:extra
     n2:
       mgmt-ipv4: 172.16.0.12
       mgmt-ipv6: 3fff:172:16:0::12
       kind: linux
-      image: ghcr.io/mapickett/alpine-ssh:latest
+      image: wbitt/network-multitool:extra
+    n3:
+      mgmt-ipv4: 172.16.0.13
+      mgmt-ipv6: 3fff:172:16:0::13
+      kind: linux
+      image: wbitt/network-multitool:extra
 
   links:
-    - endpoints: ["s1:Ethernet0/1","l1:Ethernet0/1"]
-    - endpoints: ["s1:Ethernet0/2","l2:Ethernet0/1"]
-    - endpoints: ["s1:Ethernet0/3","l3:Ethernet0/1"]
-    - endpoints: ["s1:Ethernet1/0","l4:Ethernet0/1"]
-    - endpoints: ["s2:Ethernet0/1","l1:Ethernet0/2"]
-    - endpoints: ["s2:Ethernet0/2","l2:Ethernet0/2"]
-    - endpoints: ["s2:Ethernet0/3","l3:Ethernet0/2"]
-    - endpoints: ["s2:Ethernet1/0","l4:Ethernet0/2"]
-    - endpoints: ["n1:eth1","l1:Ethernet0/3"]
-    - endpoints: ["n2:eth1","l2:Ethernet0/3"]
+    - endpoints: ["s1:GigabitEthernet1/0/1","l1:GigabitEthernet1/0/1"]
+    - endpoints: ["s1:GigabitEthernet1/0/2","l2:GigabitEthernet1/0/1"]
+    - endpoints: ["s1:GigabitEthernet1/0/3","l3:GigabitEthernet1/0/1"]
+    - endpoints: ["s2:GigabitEthernet1/0/1","l1:GigabitEthernet1/0/2"]
+    - endpoints: ["s2:GigabitEthernet1/0/2","l2:GigabitEthernet1/0/2"]
+    - endpoints: ["s2:GigabitEthernet1/0/3","l3:GigabitEthernet1/0/2"]
+    - endpoints: ["n1:eth1","l1:GigabitEthernet1/0/3"]
+    - endpoints: ["n2:eth1","l2:GigabitEthernet1/0/3"]
+    - endpoints: ["n3:eth1","l3:GigabitEthernet1/0/3"]
 
 

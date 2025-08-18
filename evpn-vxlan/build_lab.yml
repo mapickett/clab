@@ -1,25 +1,29 @@
 ---
 - name: PLAY - Build the Lab
-  hosts: cisco_iol
+  hosts: cisco_cat9kv
   gather_facts: no
   vars_files:
     - ./datamodel.yml
 
   tasks:
 
-    - name: Disable CDP on clab mgmt interface
+    - name: Set License Boot Level - Network Advantage
       cisco.ios.ios_config:
         lines:
-          - no cdp enable
-        parents: interface Ethernet0/0
-      changed_when: false
-          
-    - name: Enable all Interfaces
+          - license boot level network-advantage
+
+    - name: Enable IP Routing
+      cisco.ios.ios_config:
+        lines:
+          - ip routing
+
+    - name: Configure Ethernet Interfaces - L3 Mode
       cisco.ios.ios_interfaces:
         config:
           - name: "{{ item.key }}"
-            enabled: true
+            mode: layer3
         state: merged
+      when: "'Ethernet' in item.key"
       loop: "{{ dm.underlay.interfaces[inventory_hostname] | dict2items }}"
 
     - name: Configure IP Addressing

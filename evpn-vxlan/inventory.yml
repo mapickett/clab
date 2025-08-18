@@ -5,7 +5,7 @@ all:
     # module does not attempt using any global http proxy.
     ansible_httpapi_use_proxy: false
   children:
-    cisco_iol:
+    cisco_cat9kv:
       vars:
         ansible_connection: ansible.netcommon.network_cli
         ansible_network_os: cisco.ios.ios
@@ -18,8 +18,6 @@ all:
           ansible_host: 172.16.0.4
         l3:
           ansible_host: 172.16.0.5
-        l4:
-          ansible_host: 172.16.0.6
         s1:
           ansible_host: 172.16.0.1
         s2:
@@ -33,3 +31,5 @@ all:
           ansible_host: 172.16.0.11
         n2:
           ansible_host: 172.16.0.12
+        n3:
+          ansible_host: 172.16.0.13
