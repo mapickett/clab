@@ -10,12 +10,12 @@ dm:
     networks:
       - vlan: 101
         vni: 10101
-        bum_forwarding: static
+        replication: static
         mcast: 225.0.0.101
         members: [ 'l1', 'l2', 'l3']
       - vlan: 102
         vni: 10102
-        bum_forwarding: ingress
+        replication: ingress
         members: [ 'l1', 'l2', 'l3']
     spines:
       - s1

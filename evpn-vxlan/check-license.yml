@@ -1,0 +1,13 @@
+- name: Check Running License Level
+  hosts: cisco_cat9kv
+  gather_facts: no
+  
+  tasks:
+
+    - name: Check license usage - Network Advantage
+      cisco.ios.ios_command:
+        commands:
+          - show license usage
+      register: command_result
+      failed_when: '"network-advantage" not in command_result.stdout[0]'
+      ignore_errors: true 

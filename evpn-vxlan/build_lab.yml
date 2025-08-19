@@ -7,11 +7,6 @@
 
   tasks:
 
-    - name: Set License Boot Level - Network Advantage
-      cisco.ios.ios_config:
-        lines:
-          - license boot level network-advantage
-
     - name: Enable IP Routing
       cisco.ios.ios_config:
         lines:

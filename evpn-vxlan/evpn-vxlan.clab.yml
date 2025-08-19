@@ -1,7 +1,7 @@
 name: evpn
 prefix: __lab-name
 mgmt:
-  network: spv4_mgmt
+  network: evpn_mgmt
   ipv4-subnet: 172.16.0.0/24
   ipv4-gw: 172.16.0.254
   ipv6-subnet: 3fff:172:16:0::/80
@@ -65,7 +65,11 @@ topology:
     - endpoints: ["s2:GigabitEthernet1/0/2","l2:GigabitEthernet1/0/2"]
     - endpoints: ["s2:GigabitEthernet1/0/3","l3:GigabitEthernet1/0/2"]
     - endpoints: ["n1:eth1","l1:GigabitEthernet1/0/3"]
-    - endpoints: ["n2:eth1","l2:GigabitEthernet1/0/3"]
-    - endpoints: ["n3:eth1","l3:GigabitEthernet1/0/3"]
-
-
+    - endpoints: ["n1:eth2","l2:GigabitEthernet1/0/3"]
+    - endpoints: ["n1:eth3","l3:GigabitEthernet1/0/3"]
+    - endpoints: ["n2:eth1","l1:GigabitEthernet1/0/4"]
+    - endpoints: ["n2:eth2","l2:GigabitEthernet1/0/4"]
+    - endpoints: ["n2:eth3","l3:GigabitEthernet1/0/4"]
+    - endpoints: ["n3:eth1","l1:GigabitEthernet1/0/5"]
+    - endpoints: ["n3:eth2","l2:GigabitEthernet1/0/5"]
+    - endpoints: ["n3:eth3","l3:GigabitEthernet1/0/5"]
