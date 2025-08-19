@@ -4,3 +4,8 @@ topology:
     switch1:
       kind: cisco_cat9kv
       image: vrnetlab/cisco_cat9kv:17.15.01
+    switch2:
+      kind: cisco_cat9kv
+      image: vrnetlab/cisco_cat9kv:17.15.01
+  links:
+    - endpoints: ["switch1:GigabitEthernet1/0/1","switch2:GigabitEthernet1/0/1"]
