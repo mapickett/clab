@@ -1,0 +1,26 @@
+l2vpn evpn
+ replication-type static
+ router-id Loopback1
+ logging peer state
+{% for net in dm.evpn.networks %}
+l2vpn evpn instance {{ net.vlan }} vlan-based
+ encapsulation vxlan
+{% if net.replication == "ingress" %}
+ replication-type ingress
+{% endif %}
+{% endfor %}
+{% for net in dm.evpn.networks %}
+vlan configuration {{ net.vlan }}
+ member evpn-instance {{ net.vlan }} vni {{ net.vni }}
+{% endfor %}
+interface nve1
+ no ip address
+ source-interface Loopback1
+ host-reachability protocol bgp
+{% for net in dm.evpn.networks %}
+{% if net.replication == "ingress" %}
+ member vni {{ net.vni }} ingress-replication
+{% else %}
+ member vni {{ net.vni }} mcast-group {{ net.mcast }}
+{% endif %}
+{% endfor %}

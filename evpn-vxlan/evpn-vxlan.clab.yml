@@ -10,6 +10,9 @@ topology:
   defaults:
     kind: cisco_cat9kv
     image: vrnetlab/cisco_cat9kv:17.15.01
+  kinds:
+    cisco_cat9kv:
+      startup-config: configs/__clabNodeName__-startup-config.cfg
   nodes:
     s1:
       mgmt-ipv4: 172.16.0.1
@@ -45,17 +48,26 @@ topology:
       mgmt-ipv4: 172.16.0.11
       mgmt-ipv6: 3fff:172:16:0::11
       kind: linux
-      image: wbitt/network-multitool:extra
+      image: ghcr.io/mapickett/alpine-ssh:latest
+      exec:
+        - ifconfig eth1 10.1.101.11 netmask 255.255.255.0
+        - echo 0 >/proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
     n2:
       mgmt-ipv4: 172.16.0.12
       mgmt-ipv6: 3fff:172:16:0::12
       kind: linux
-      image: wbitt/network-multitool:extra
+      image: ghcr.io/mapickett/alpine-ssh:latest
+      exec:
+        - ifconfig eth2 10.1.101.12 netmask 255.255.255.0
+        - echo 0 >/proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
     n3:
       mgmt-ipv4: 172.16.0.13
       mgmt-ipv6: 3fff:172:16:0::13
       kind: linux
-      image: wbitt/network-multitool:extra
+      image: ghcr.io/mapickett/alpine-ssh:latest
+      exec:
+        - ifconfig eth3 10.1.102.13 netmask 255.255.255.0
+        - echo 0 >/proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
 
   links:
     - endpoints: ["s1:GigabitEthernet1/0/1","l1:GigabitEthernet1/0/1"]

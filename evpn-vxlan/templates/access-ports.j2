@@ -1,0 +1,13 @@
+{% if inventory_hostname in dm.evpn.leaves %}
+{% for port in dm.access_ports[inventory_hostname] %}
+interface {{ port.name }}
+ description {{ port.description }}
+ switchport access vlan {{ port.vlan }}
+ switchport mode access
+{% if port.state == 'disabled' %}
+ shutdown
+{% endif %}
+ spanning-tree portfast
+{% endfor %}
+{% endif %}
+

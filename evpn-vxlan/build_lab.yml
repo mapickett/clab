@@ -93,10 +93,20 @@
           - "ip msdp peer {{ msdp_peer }} connect-source Loopback0 remote-as {{ dm.evpn.asn }}"
       when: inventory_hostname in dm.evpn.spines
 
-    - name: Deploy EVPN BGP Configurations
+    - name: Deploy BGP EVPN Configuration
       cisco.ios.ios_config:
-        src: ./bgp-template.j2
-        
+        src: bgp.j2
+
+    - name: Deploy EVPN Configurations
+      cisco.ios.ios_config:
+        src: evpn.j2
+      when: inventory_hostname in dm.evpn.leaves
+
+    - name: Configure Access Ports
+      cisco.ios.ios_config:
+        src: access-ports.j2
+      when: inventory_hostname in dm.evpn.leaves
+
     - name: Save device configurations
       cisco.ios.ios_config:
         save_when: modified
